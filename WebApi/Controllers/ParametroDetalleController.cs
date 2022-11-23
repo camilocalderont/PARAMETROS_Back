@@ -205,5 +205,26 @@ namespace WebApi.Controllers
             var updateResponse = new GenericResponse(response.Codigo, response.Titulo, response.Mensaje);
             return StatusCode((int)updateResponse.Codigo, updateResponse);
         }
+
+        [HttpGet("{CodigoInterno}/{IdDetalle}")]
+        public ActionResult<IEnumerable<ParametroDetalleMapper>> porCodigoInternoDetallePadre(string CodigoInterno, long IdDetalle)
+        {
+            var response = new { Titulo = "", Mensaje = "", Codigo = HttpStatusCode.Accepted };
+
+            var ParametroDetalle = _parametroService.getParametroDetallePorCodigoInternoPadre(CodigoInterno, IdDetalle);
+
+            if (ParametroDetalle.Count() == 0)
+            {
+                response = new { Titulo = "Algo salio mal", Mensaje = "No existe parámetros detalle asociados al código interno " + CodigoInterno + " y Id detalle " + IdDetalle, Codigo = HttpStatusCode.NotFound };
+            }
+            else
+            {
+                response = new { Titulo = "Bien Hecho!", Mensaje = "Se obtuvieron parámetros detalle con el Id solicitado", Codigo = HttpStatusCode.OK };
+            }
+
+            var modelResponse = new ListModelResponse<ParametroDetalleMapper>(response.Codigo, response.Titulo, response.Mensaje, ParametroDetalle);
+            return StatusCode((int)modelResponse.Codigo, modelResponse);
+
+        }
     }
 }

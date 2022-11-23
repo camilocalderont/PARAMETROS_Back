@@ -160,6 +160,38 @@ namespace Persistencia.Repository
 
         }
 
+        public IEnumerable<ParametroDetalleMapper> getParametroDetallePorCodigoInternoPadre(string codigoIterno, long IdDetalle)
+        {
+            var parametro = _context.Parametro
+                    .Where(p => p.BEstado == true && p.VcCodigoInterno == codigoIterno)
+                    .FirstOrDefault();
+
+            IEnumerable<ParametroDetalleMapper> parametroDetalle = Array.Empty<ParametroDetalleMapper>();
+
+            if (parametro != null)
+            {
+                parametroDetalle = _context.ParametroDetalle
+                   .Where(p => p.BEstado == true && p.IdPadre == IdDetalle && p.ParametroId == parametro.Id)
+                   .Select(d => new ParametroDetalleMapper
+                   {
+                       Id = d.Id,
+                       ParametroId = d.ParametroId,
+                       VcNombre = d.VcNombre,
+                       TxDescripcion = d.TxDescripcion,
+                       IdPadre = d.IdPadre,
+                       VcCodigoInterno = d.VcCodigoInterno,
+                       DCodigoIterno = d.DCodigoIterno,
+                       BEstado = d.BEstado,
+                       RangoDesde = d.RangoDesde,
+                       RangoHasta = d.RangoHasta
+                   })
+                   .ToList();
+            }
+
+
+            return parametroDetalle;
+        }
+
     }
 
 }
