@@ -15,7 +15,7 @@
         public DateTime? DtFechaActualizacion { get; set; }
 
         public DateTime? DtFechaAnulacion { get; set; }
-
+        
         public IEnumerable<ParametroDetalleMapper> ParametroDetalles { get; set; }
             = Array.Empty<ParametroDetalleMapper>();
 

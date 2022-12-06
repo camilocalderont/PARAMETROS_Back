@@ -36,5 +36,10 @@ namespace Aplicacion.Services
             return _parametroRepository.getParametroDetallePorCodigoInternoPadre(codigoIterno, IdDetalle);
         }
 
+        public IEnumerable<ParametroDetalleMapper> getParametroDetallePorPadre(long IdDetalle)
+        {
+            return _parametroRepository.getParametroDetallePorPadre(IdDetalle);
+        }
+
     }
 }

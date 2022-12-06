@@ -226,5 +226,26 @@ namespace WebApi.Controllers
             return StatusCode((int)modelResponse.Codigo, modelResponse);
 
         }
+
+        [HttpGet("{IdDetalle}")]
+        public ActionResult<IEnumerable<ParametroDetalleMapper>> getParametroDetallePorPadre(long IdDetalle)
+        {
+            var response = new { Titulo = "", Mensaje = "", Codigo = HttpStatusCode.Accepted };
+
+            var ParametroDetalle = _parametroService.getParametroDetallePorPadre(IdDetalle);
+
+            if (ParametroDetalle.Count() == 0)
+            {
+                response = new { Titulo = "Algo salio mal", Mensaje = "No existe parámetros detalle asociados al código interno  y Id detalle " + IdDetalle, Codigo = HttpStatusCode.NotFound };
+            }
+            else
+            {
+                response = new { Titulo = "Bien Hecho!", Mensaje = "Se obtuvieron parámetros detalle con el Id solicitado", Codigo = HttpStatusCode.OK };
+            }
+
+            var modelResponse = new ListModelResponse<ParametroDetalleMapper>(response.Codigo, response.Titulo, response.Mensaje, ParametroDetalle);
+            return StatusCode((int)modelResponse.Codigo, modelResponse);
+
+        }
     }
 }
