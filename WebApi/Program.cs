@@ -18,6 +18,14 @@ builder.Services.AddSwaggerGen();
 
 DotNetEnv.Env.Load();
 
+var logger = LoggerFactory.Create(config =>
+{
+    config.AddConsole();
+}).CreateLogger("Program");
+
+logger.LogInformation("CADENA DE CONEXION: " + Environment.GetEnvironmentVariable("CONNECTION_STRING"));
+
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
                        options.UseSqlServer(Environment.GetEnvironmentVariable("CONNECTION_STRING")),
             ServiceLifetime.Transient);
@@ -81,6 +89,7 @@ app.UseCors(myAllowSpecificOrigins);
 app.UseAuthorization();
 
 app.MapControllers();
+
 app.Run();
 
 
